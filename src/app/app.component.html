@@ -1,1 +1,14 @@
-<h1>app ceated</h1>
+<div class="w-screen h-screen flex">
+    <div class="flex-none w-1/4">
+            <app-sidebar></app-sidebar>
+
+    </div>
+    <div class="flex-1">
+        <div class="flex-1 w-full bg-green-800 h-1/4">
+            Header part
+        </div>
+        <div class="flex-1 h-3/4 p-2 bg-red-400">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

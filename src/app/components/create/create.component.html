@@ -1,0 +1,19 @@
+<div class="w-full h-full bg-white">
+    <form [formGroup]="form" (submit)="onSavePost()">
+        <mat-form-field>
+            <input matInput type="text" formControlName="title" placeholder="Post Title">
+         </mat-form-field>
+<br>
+        <mat-form-field>
+            <input matInput type="text" formControlName="content" placeholder="Post content">
+         </mat-form-field>
+<br>
+        <button mat-raised-button type="submit" color="primary">Primary</button>
+
+    </form>
+
+     
+</div>
+
+ 
+
