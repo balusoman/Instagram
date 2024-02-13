@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Post } from '../../models/post.model';
 import { PostsService } from '../../services/posts.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -12,24 +13,19 @@ import { PostsService } from '../../services/posts.service';
 })
 export class FeedComponent {
 
-  posts:Post[]=[
-    {
-    title:'first Title',
-    content:'1st content'
-  },
-  {
-    title:'second Title',
-    content:'2nd content'
-  },
-  {
-    title:'third Title',
-    content:'3rd content'
-  },
-]
+  posts:Post[]=[]
+  private postsSub!:Subscription
 
 constructor(private postService:PostsService){}
 
-ngOnInit() {
-  this.posts = this.postService.getPost()
+ngOnInit() { 
+  this.posts=this.postService.getPost()
+ this.postsSub = this.postService.getPostUpdateListener().subscribe((posts:Post[])=>{
+    this.posts=posts
+  })
+}
+
+ngOnDestroy(){
+  this.postsSub.unsubscribe()
 }
 }

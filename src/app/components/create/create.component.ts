@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import { PostsService } from '../../services/posts.service';
@@ -34,8 +34,8 @@ export class CreateComponent implements OnInit {
 
      if(this.form.valid){
       console.log(this.form.value)
-      this.postService.addPost(this.form.value.title, this.form.value.content);
-      
+      this.postService.addPost(this.form.value.title, this.form.value.content)
+      this.form.reset()
     }
   }
 }
