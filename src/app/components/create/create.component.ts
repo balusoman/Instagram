@@ -33,9 +33,10 @@ export class CreateComponent implements OnInit {
   onSavePost(){
 
      if(this.form.valid){
-      console.log(this.form.value)
+      console.log(this.form.value,"branch created")
       this.postService.addPost(this.form.value.title, this.form.value.content)
       this.form.reset()
+      //okk
     }
   }
 }
