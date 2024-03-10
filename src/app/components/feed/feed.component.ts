@@ -19,7 +19,7 @@ export class FeedComponent {
 constructor(private postService:PostsService){}
 
 ngOnInit() { 
-  this.posts=this.postService.getPost()
+this.postService.getPost()
  this.postsSub = this.postService.getPostUpdateListener().subscribe((posts:Post[])=>{
     this.posts=posts
   })
