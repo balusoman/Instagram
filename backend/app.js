@@ -1,5 +1,20 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+const Post = require('./models/post');
+
 const app=express();
+
+mongoose.connect('mongodb+srv://balu_soman:wEF2gc0ROsAb3k4w@atlascluster.lfher8k.mongodb.net/instagram?retryWrites=true&w=majority&appName=AtlasCluster', {useNewUrlParser: true, useUnifiedTopology: true})
+.then(()=>{
+    console.log('Connected to database!');
+}).catch(()=>{
+    console.log('Connection failed!');
+} );
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 app.use((req,res,next)=>{
     res.setHeader('Access-Control-Allow-Origin','*');
@@ -8,15 +23,27 @@ app.use((req,res,next)=>{
     next();
 });
 
+// wEF2gc0ROsAb3k4w
+
+app.post('/api/posts', (req,res,next)=>{
+    const post = new Post({
+        title: req.body.title,
+        content: req.body.content
+    });
+    console.log(post);
+    post.save();
+    res.status(201).json({
+        message:'Post added successfully'
+    });
+});
+
 
 app.use('/api/posts', (req,res,next)=>{
-    const posts =[
-            {id:'fadf12421', title: 'First server-side post', content: 'This is coming from the server'},
-            {id:'ksajflaj132', title: 'Second server-side post', content: 'This is coming from the server!'}
-    ]
-    res.status(200).json({
-        message:'Posts fetched successfully!',
-        posts: posts
+    Post.find().then(documents=>{
+        res.status(200).json({
+            message:'Posts fetched successfully!',
+            posts: documents
+        }); 
     });
 })
 
