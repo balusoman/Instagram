@@ -25,6 +25,20 @@ this.postService.getPost()
   })
 }
 
+
+onEdit(id:string){
+  console.log(id,"edited")
+}
+
+onDelete(id:string){
+  console.log(id,"deleted")
+  this.postService.deletePost(id)
+}
+
+
+
+
+
 ngOnDestroy(){
   this.postsSub.unsubscribe()
 }
