@@ -4,8 +4,9 @@ import { ExploreComponent } from './components/explore/explore.component';
 import { CreateComponent } from './components/create/create.component';
 
 export const routes: Routes = [
+    { path: '', redirectTo: 'feed', pathMatch: 'full' },
     {
-        path:'',
+        path:'feed',
         component:FeedComponent
     },
     {
@@ -16,4 +17,8 @@ export const routes: Routes = [
         path:'create',
         component:CreateComponent
     }
+    // {
+    //     path: '**', 
+    //     component:PagenotfoundComponent
+    //   }
 ];
