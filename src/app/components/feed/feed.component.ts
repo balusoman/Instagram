@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { Post } from '../../models/post.model';
 import { PostsService } from '../../services/posts.service';
 import { Subscription } from 'rxjs';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-feed',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.scss'
 })
