@@ -4,7 +4,7 @@
            <div>
             <h3>{{post.title}}</h3>
             <p>{{post.content}}</p>
-            <button (click)="onEdit(post.id)">edit</button> <br>
+            <a [routerLink]="['/edit',post.id]">edit</a> <br>
             <button (click)="onDelete(post.id)">delete</button>
             <hr>
         </div> 
