@@ -5,11 +5,12 @@ import {MatInputModule} from '@angular/material/input';
 import { PostsService } from '../../services/posts.service';
 import { ActivatedRoute, ParamMap, Route, Router } from '@angular/router';
 import { Post } from '../../models/post.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-create',
   standalone: true,
-  imports: [MatButtonModule,ReactiveFormsModule,FormsModule,MatInputModule],
+  imports: [MatButtonModule,ReactiveFormsModule,FormsModule,MatInputModule,CommonModule],
   templateUrl: './create.component.html',
   styleUrl: './create.component.scss'
 })
@@ -19,6 +20,7 @@ export class CreateComponent implements OnInit {
   mode = 'create';
   postId!: string;
   post!:Post
+  imgPreview!:string
 
   constructor(public postService:PostsService , public route:ActivatedRoute,public router:Router){}
 
@@ -52,6 +54,7 @@ export class CreateComponent implements OnInit {
         validators: [Validators.required, Validators.minLength(3)]
       }),
       content: new FormControl(null, { validators: [Validators.required] }),
+      image: new FormControl(null, { validators: [Validators.required] })
     });
   }
 
@@ -66,5 +69,17 @@ export class CreateComponent implements OnInit {
     }
     this.form.reset() 
     this.router.navigate(['/feed'])
+  }
+
+  onImagePicked(event:Event){
+    const file= (event.target as HTMLInputElement ).files![0]
+    this.form.patchValue({image:file})
+    this.form.get('image')?.updateValueAndValidity()
+    console.log(this.form)
+    const reader = new FileReader()
+    reader.onload = ()=>{
+      this.imgPreview = reader.result as string
+    } 
+    reader.readAsDataURL(file)
   }
 }

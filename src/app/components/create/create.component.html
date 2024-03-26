@@ -3,6 +3,13 @@
         <mat-form-field>
             <input matInput type="text" formControlName="title" placeholder="Post Title">
          </mat-form-field>
+         <div>
+            <button mat-stroked-button type="button" (click)="filePicker.click()">pick Image</button>
+            <input type="file" #filePicker (change)="onImagePicked($event)">
+         </div>
+         <div class="imgPrev" *ngIf="imgPreview !== '' && imgPreview">
+            <img [src]="imgPreview" [alt]="form.value.title">
+         </div>
 <br>
         <mat-form-field>
             <input matInput type="text" formControlName="content" placeholder="Post content">
