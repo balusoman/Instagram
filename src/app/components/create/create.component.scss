@@ -1,0 +1,12 @@
+input[type="file"]{
+    visibility: hidden;
+}   
+
+.imgPrev{
+     height: 15rem;
+    object-fit: cover;
+}
+.imgPrev img{ 
+    height: 100%;
+    object-fit: cover;
+}
