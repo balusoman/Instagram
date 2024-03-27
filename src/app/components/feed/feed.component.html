@@ -4,6 +4,9 @@
            <div>
             <h3>{{post.title}}</h3>
             <p>{{post.content}}</p>
+            <div class="postImage">
+                <img [src]="post.imagePath" [alt]="post.title">
+            </div>
             <a [routerLink]="['/edit',post.id]">edit</a> <br>
             <button (click)="onDelete(post.id)">delete</button>
             <hr>
