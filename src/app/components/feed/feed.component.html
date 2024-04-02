@@ -13,8 +13,12 @@
         </div> 
         }
     </div>
+    
 }
+
 @else {
     <h3>no post available</h3>
 }
+<mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="[2,5,10,50]" (page)="onChangedPage($event)" aria-label="Select page">
+</mat-paginator>
 

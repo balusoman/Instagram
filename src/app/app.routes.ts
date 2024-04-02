@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { FeedComponent } from './components/feed/feed.component';
 import { ExploreComponent } from './components/explore/explore.component';
 import { CreateComponent } from './components/create/create.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { SignupComponent } from './components/auth/signup/signup.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'feed', pathMatch: 'full' },
@@ -20,9 +22,13 @@ export const routes: Routes = [
     {
         path:'edit/:id',
         component:CreateComponent
-    }
-    // {
-    //     path: '**', 
-    //     component:PagenotfoundComponent
-    //   }
+    },
+    {
+        path: 'login', 
+        component:LoginComponent
+      },
+      {
+        path: 'signup', 
+        component:SignupComponent
+      }
 ];
