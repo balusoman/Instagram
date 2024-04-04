@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule, NgForm, NgModel, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,8 +14,12 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class LoginComponent {
 
+  constructor(private authService:AuthService) {}
 
   onLogin(form:NgForm){
-    console.log(form.value)
+    if(form.invalid){
+      return
+    }
+    this.authService.login(form.value.email,form.value.password)
   }
 }

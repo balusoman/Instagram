@@ -1,11 +1,11 @@
 <div class="w-full h-full bg-white">
     <form (submit)="onSignup(signupForm)" #signupForm="ngForm">
         <mat-form-field>
-            <input matInput name="email" type="email" #emailInpu="ngModel" ngModel placeholder="email">
+            <input matInput name="email" type="email" #emailInpu="ngModel" ngModel required email placeholder="email">
          </mat-form-field> 
 <br>
         <mat-form-field>
-            <input matInput type="password" #emailInpu="ngModel"ngModel placeholder="password">
+            <input matInput name="password" type="password" #emailInpu="ngModel"ngModel required placeholder="password">
          </mat-form-field>
 <br>
         <button mat-raised-button type="submit" color="primary">signup</button>
