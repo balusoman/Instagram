@@ -4,6 +4,8 @@ import { ExploreComponent } from './components/explore/explore.component';
 import { CreateComponent } from './components/create/create.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { SignupComponent } from './components/auth/signup/signup.component';
+import { AuthGuard } from './components/auth/auth.guard';
+
 
 export const routes: Routes = [
     { path: '', redirectTo: 'feed', pathMatch: 'full' },
@@ -17,11 +19,13 @@ export const routes: Routes = [
     },
     {
         path:'create',
-        component:CreateComponent
+        component:CreateComponent,
+        canActivate: [AuthGuard],
     },
     {
         path:'edit/:id',
-        component:CreateComponent
+        component:CreateComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'login', 
@@ -32,3 +36,4 @@ export const routes: Routes = [
         component:SignupComponent
       }
 ];
+

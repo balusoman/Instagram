@@ -1,7 +1,8 @@
 <div class="bg-zinc-200 h-screen">
     <li><a routerLink="feed" routerLinkActive="active" >feed</a></li>
     <li><a routerLink="explore" routerLinkActive="active" > explore</a></li>
-    <li><a routerLink="create" routerLinkActive="active">create</a></li>
-    <li><a routerLink="login" routerLinkActive="active">Login</a></li>
-    <li><a routerLink="signup" routerLinkActive="active">signup</a></li>
+    <li *ngIf="userIsAuthenticated"><a routerLink="create" routerLinkActive="active">create</a></li>
+    <li *ngIf="!userIsAuthenticated"><a routerLink="login" routerLinkActive="active">Login</a></li>
+    <li *ngIf="!userIsAuthenticated"><a routerLink="signup" routerLinkActive="active">signup</a></li>
+    <li *ngIf="userIsAuthenticated"><button mat-button (click)="logOut()">logOut</button></li>
 </div>
