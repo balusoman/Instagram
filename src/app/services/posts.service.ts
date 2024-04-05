@@ -17,12 +17,13 @@ export class PostsService {
     const queryParams=`?pagesize=${postsPerPage}&page=${currentPage}`
     this.http.get<{message:string,posts:any,maxPosts:number}>('http://localhost:3000/api/posts'+ queryParams)
     .pipe(map((postData)=>{
-      return { posts: postData.posts.map((post: { title: any; content: any; _id: any;imagePath:any }) =>{
+      return { posts: postData.posts.map((post: { title: any; content: any; _id: any;imagePath:any,creator:string }) =>{
         return {
           title:post.title,
           content:post.content,
           id:post._id,
-          imagePath:post.imagePath
+          imagePath:post.imagePath,
+          creator:post.creator
         }
       }),maxPosts:postData.maxPosts
     }
@@ -41,10 +42,10 @@ export class PostsService {
   }
 
   getPostById(id:any){ 
-    return this.http.get<{_id:any,title:string,content:string,imagePath:string }>('http://localhost:3000/api/posts/'+id)
+    return this.http.get<{_id:any,title:string,content:string,imagePath:string,creator:string}>('http://localhost:3000/api/posts/'+id)
   }
 
-  addPost(title:string,content:string,image:File){
+  addPost(title:string,content:string,image:File,creator:string){
     // const post:Post={
     //   id:null,
     //   title:title,
@@ -54,14 +55,20 @@ export class PostsService {
     postData.append('title',title)
     postData.append('content',content)
     postData.append('image',image,title)
+    postData.append('creator',creator)
 
     this.http.post<{message:string,post:any}>('http://localhost:3000/api/posts',postData)
     .subscribe((responseData)=>{
-      
+      console.log(responseData)
+      // const newPost = responseData.post
+      // this.posts.push(newPost)
+      // this.postUpdated.next({
+      //   posts:[...this.posts], postCount:this.posts.length+1
+      // })
     })
   }
 
-  updatePost(id:string,title:string,content:string,image:File | string){
+  updatePost(id:string,title:string,content:string,image:File | string,creator:string){
     // const post:Post={
     //   id:id,
     //   title:title,
@@ -75,21 +82,25 @@ export class PostsService {
       postData.append('title',title)
       postData.append('content',content)
       postData.append('image',image,title)
+      postData.append('creator',creator)
     }else{
       postData={
         id:id,
         title:title,
         content:content,
-        imagePath:image
+        imagePath:image,
+        creator:creator
       }
     }
+    console.log(postData,id)
     this.http.put('http://localhost:3000/api/posts/'+id,postData)
     .subscribe((response:any)=>{
-      
+      console.log(response)
     })
   }
 
-  deletePost(postId:string){ 
-   return this.http.delete('http://localhost:3000/api/posts/'+postId)
+  deletePost(postId: string, creator: string) {
+    console.log(postId);
+    return this.http.delete('http://localhost:3000/api/posts/' + postId, { body: { creator } });
   }
 }

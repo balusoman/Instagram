@@ -6,6 +6,7 @@ import { PostsService } from '../../services/posts.service';
 import { ActivatedRoute, ParamMap, Route, Router } from '@angular/router';
 import { Post } from '../../models/post.model';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-create',
@@ -21,13 +22,16 @@ export class CreateComponent implements OnInit {
   postId!: string;
   post!:Post
   imgPreview!:string
+  userId!:string
 
-  constructor(public postService:PostsService , public route:ActivatedRoute,public router:Router){}
+  constructor(public postService:PostsService , public route:ActivatedRoute,public router:Router,private authService:AuthService){}
 
 
 
   
   ngOnInit() {
+
+    this.userId = this.authService.getUserId();
 
     this.route.paramMap.subscribe((paramMap:ParamMap)=>{
       if(paramMap.has('id')){
@@ -35,11 +39,13 @@ export class CreateComponent implements OnInit {
         this.mode = 'edit';
         this.postId = paramMap.get('id')!;
         this.postService.getPostById(this.postId).subscribe((postData)=>{
-          this.post = {id:postData._id,title:postData.title,content:postData.content,imagePath:postData.imagePath}
+          this.post = {id:postData._id,title:postData.title,content:postData.content,imagePath:postData.imagePath,creator:postData.creator}
           this.form.setValue({
             title:this.post.title,
             content:this.post.content,
-            image:this.post.imagePath
+            image:this.post.imagePath,
+            creator:this.post.creator
+
           })
             
         })
@@ -55,7 +61,8 @@ export class CreateComponent implements OnInit {
         validators: [Validators.required, Validators.minLength(3)]
       }),
       content: new FormControl(null, { validators: [Validators.required] }),
-      image: new FormControl(null, { validators: [Validators.required] })
+      image: new FormControl(null, { validators: [Validators.required] }),
+      creator: new FormControl(this.userId, { validators: [Validators.required] })
     });
   }
 
@@ -64,12 +71,12 @@ export class CreateComponent implements OnInit {
       return
     }
      if(this.mode==='create'){
-      this.postService.addPost(this.form.value.title, this.form.value.content,this.form.value.image)
+      this.postService.addPost(this.form.value.title, this.form.value.content,this.form.value.image,this.userId)
     }else{
-      this.postService.updatePost(this.postId,this.form.value.title, this.form.value.content,this.form.value.image)
+      this.postService.updatePost(this.postId,this.form.value.title, this.form.value.content,this.form.value.image,this.userId)
     }
     this.form.reset() 
-    this.router.navigate(['/feed'])
+    this.router.navigate([''])
   }
 
   onImagePicked(event:Event){
