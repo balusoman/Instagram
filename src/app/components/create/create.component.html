@@ -1,4 +1,6 @@
 <div class="w-full h-full bg-white">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+
     <form [formGroup]="form" (submit)="onSavePost()">
         <mat-form-field>
             <input matInput type="text" formControlName="title" placeholder="Post Title">
