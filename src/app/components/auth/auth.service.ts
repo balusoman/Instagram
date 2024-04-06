@@ -39,7 +39,9 @@ export class AuthService {
     this.http.post('http://localhost:3000/api/user/signup',authData)
     .subscribe(response=>{
       console.log(response)
-    })
+      this.router.navigate(['/login']);
+    } 
+  )
   } 
 
   login(email: string, password: string) {
@@ -87,11 +89,11 @@ export class AuthService {
     clearTimeout(this.tokenTimer);
     this.userId = null;
     this.clearAuthData();
-    this.router.navigate(['/feed']);
+    this.router.navigate(['/login']);
   }
 
   private setAuthTimer(duration:number){
-    console.log("Setting timer: "+duration);
+    // console.log("Setting timer: "+duration);
     this.tokenTimer = setTimeout(()=>{
       this.logOut();
     },duration*1000);

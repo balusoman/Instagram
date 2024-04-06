@@ -17,47 +17,93 @@ router.post('/signup', (req, res, next) => {
                     result:result
                 });
          }).catch(err=>{
-             res.status(500).json({
-                 error:err
+             res.status(500).json({ 
+                        message:'Invalid authentication credentials!'
+                 
              });
          });
 
     })
 });
 
-router.post('/login', (req, res, next) => {
-    let fetchedUser;
-    User.findOne({email:req.body.email}).then(user=>{
-        if(!user){
+// router.post('/login', (req, res, next) => {
+//     let fetchedUser;
+//     User.findOne({email:req.body.email}).then(user=>{
+//         if(!user){
+//             return res.status(401).json({
+//                 message:'Email Authentication failed!'
+//             });
+//         }
+//         fetchedUser=user;
+//         return bcrypt.compare(req.body.password, user.password);
+//     }).then(result=>{
+//         if(!result){
+//             return res.status(401).json({
+//                 message:'Authentication failed!'
+//             });
+//         }
+
+//         const token = jwt.sign({email:fetchedUser.email, userId:fetchedUser._id},
+//             'secrete_this_should_be_shorter',
+//             {expiresIn:'1h'});
+
+//             res.status(200).json({
+//             token:token,
+//             expiresIn:3600,
+//             userId:fetchedUser._id
+//         })
+//     })
+//     .catch(err=>{
+//         return res.status(401).json({
+//             message:'Invalid authentication credentials!'
+//         });
+//     });
+// })
+
+router.post('/login', async (req, res, next) => {
+    try {
+        // Find the user in the database
+        const user = await User.findOne({ email: req.body.email });
+
+        // If user doesn't exist, return authentication failure message
+        if (!user) {
             return res.status(401).json({
-                message:'Auth failed'
-            });
-        }
-        fetchedUser=user;
-        return bcrypt.compare(req.body.password, user.password);
-    }).then(result=>{
-        if(!result){
-            return res.status(401).json({
-                message:'Auth failed'
+                message: 'Email Authentication failed!'
             });
         }
 
-        const token = jwt.sign({email:fetchedUser.email, userId:fetchedUser._id},
+        // Compare passwords
+        const passwordMatch = await bcrypt.compare(req.body.password, user.password);
+
+        // If passwords don't match, return authentication failure message
+        if (!passwordMatch) {
+            return res.status(401).json({
+                message: 'Authentication failed!'
+            });
+        }
+
+        // Generate JWT token
+        const token = jwt.sign(
+            { email: user.email, userId: user._id },
             'secrete_this_should_be_shorter',
-            {expiresIn:'1h'});
+            { expiresIn: '1h' }
+        );
 
+        // Send the token and user ID in response
         res.status(200).json({
-            token:token,
-            expiresIn:3600,
-            userId:fetchedUser._id
-        })
-    })
-    .catch(err=>{
-        return res.status(401).json({
-            message:'Auth failed'
+            token: token,
+            expiresIn: 3600,
+            userId: user._id
         });
-    });
-})
+    } catch (error) {
+        // Handle any errors and return appropriate message
+        console.error(error); // Log the error for debugging
+        return res.status(401).json({
+            message: 'Invalid authentication credentials!'
+        });
+    }
+});
+
 
 
 module.exports = router;
