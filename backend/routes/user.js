@@ -1,30 +1,10 @@
 const express = require('express');
-const User = require('../models/user');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const userController = require('../controllers/user');
+
 
 const router = express.Router();
 
-router.post('/signup', (req, res, next) => {
-    bcrypt.hash(req.body.password, 10).then(hash=>{
-        const user= new User({
-            email:req.body.email,
-            password: hash
-         });
-         user.save().then(result=>{
-                res.status(201).json({
-                    message:'User created!',
-                    result:result
-                });
-         }).catch(err=>{
-             res.status(500).json({ 
-                        message:'Invalid authentication credentials!'
-                 
-             });
-         });
-
-    })
-});
+router.post('/signup',userController.createUser);
 
 // router.post('/login', (req, res, next) => {
 //     let fetchedUser;
@@ -60,49 +40,7 @@ router.post('/signup', (req, res, next) => {
 //     });
 // })
 
-router.post('/login', async (req, res, next) => {
-    try {
-        // Find the user in the database
-        const user = await User.findOne({ email: req.body.email });
-
-        // If user doesn't exist, return authentication failure message
-        if (!user) {
-            return res.status(401).json({
-                message: 'Email Authentication failed!'
-            });
-        }
-
-        // Compare passwords
-        const passwordMatch = await bcrypt.compare(req.body.password, user.password);
-
-        // If passwords don't match, return authentication failure message
-        if (!passwordMatch) {
-            return res.status(401).json({
-                message: 'Authentication failed!'
-            });
-        }
-
-        // Generate JWT token
-        const token = jwt.sign(
-            { email: user.email, userId: user._id },
-            'secrete_this_should_be_shorter',
-            { expiresIn: '1h' }
-        );
-
-        // Send the token and user ID in response
-        res.status(200).json({
-            token: token,
-            expiresIn: 3600,
-            userId: user._id
-        });
-    } catch (error) {
-        // Handle any errors and return appropriate message
-        console.error(error); // Log the error for debugging
-        return res.status(401).json({
-            message: 'Invalid authentication credentials!'
-        });
-    }
-});
+router.post('/login',userController.userLogin)
 
 
 

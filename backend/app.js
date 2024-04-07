@@ -9,7 +9,7 @@ const userRoutes = require('./routes/user');
 
 const app=express();
 
-mongoose.connect('mongodb+srv://balu_soman:wEF2gc0ROsAb3k4w@atlascluster.lfher8k.mongodb.net/instagram?w=majority&appName=AtlasCluster', {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(`mongodb+srv://balu_soman:${process.env.MONGO_ATLAS_PW}@atlascluster.lfher8k.mongodb.net/instagram?w=majority&appName=AtlasCluster`, {useNewUrlParser: true, useUnifiedTopology: true})
 .then(()=>{
     console.log('Connected to database!');
 }).catch(()=>{
