@@ -26,7 +26,7 @@ export class FeedComponent implements OnInit, OnDestroy{
   isLoading = false;
 
   totalPosts=10
-  postsPerPage=10
+  postsPerPage=5
   currentPage=1
   userId!:string
 
