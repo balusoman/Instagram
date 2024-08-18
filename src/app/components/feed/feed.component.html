@@ -1,27 +1,39 @@
-
-    <mat-spinner  *ngIf="isLoading" style="z-index: 1000;"></mat-spinner>
+<mat-spinner *ngIf="isLoading" style="z-index: 1000"></mat-spinner>
 
 @if (posts.length > 0) {
-    <div>
-        @for (post of posts; track $index) {
-           <div>
-            <h3>{{post.title}}</h3>
-            <p>{{post.content}}</p>
-            <div class="postImage">
-                <img [src]="post.imagePath" [alt]="post.title">
-            </div>
-            <a *ngIf="userIsAuthenticated && userId === post.creator" [routerLink]="['/edit',post.id]">edit</a> <br>
-            <button *ngIf="userIsAuthenticated && userId === post.creator" (click)="onDelete(post.id)">delete</button>
-            <hr>
-        </div> 
-        }
+<div>
+  @for (post of posts; track $index) {
+  <div>
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.content }}</p>
+    <div class="postImage">
+      <img [src]="post.imagePath" [alt]="post.title" />
     </div>
-    
-}
-
-@else {
-    <h3>no post available</h3>
-}
-<mat-paginator [length]="totalPosts" [pageSize]="postsPerPage" [pageSizeOptions]="[2,5,10,50]" (page)="onChangedPage($event)" aria-label="Select page">
+    <a
+      *ngIf="userIsAuthenticated && userId === post.creator"
+      [routerLink]="['/edit', post.id]"
+      >edit</a
+    >
+    <br />
+    <button
+      *ngIf="userIsAuthenticated && userId === post.creator"
+      (click)="onDelete(post.id)"
+    >
+      delete
+    </button>
+    <hr />
+  </div>
+  }
+</div>
+<mat-paginator
+  [length]="totalPosts"
+  [pageSize]="postsPerPage"
+  [pageSizeOptions]="[2, 5, 10, 50]"
+  (page)="onChangedPage($event)"
+  aria-label="Select page"
+>
 </mat-paginator>
 
+} @else {
+<h3>no post available</h3>
+}
